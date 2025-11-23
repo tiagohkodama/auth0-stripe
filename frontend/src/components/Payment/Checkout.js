@@ -19,7 +19,6 @@ function Checkout({ amount = 2000, description = 'Product Purchase' }) {
         setLoading(true);
         setError(null);
 
-        // Create payment intent
         const data = await createPaymentIntent(
           getAccessTokenSilently,
           amount,

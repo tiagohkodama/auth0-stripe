@@ -1,4 +1,3 @@
-// Custom error class
 class AppError extends Error {
   constructor(message, status) {
     super(message);
@@ -7,7 +6,6 @@ class AppError extends Error {
   }
 }
 
-// Centralized error handling middleware
 const errorHandler = (err, req, res, next) => {
   console.error('Error:', {
     message: err.message,
@@ -46,7 +44,6 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
-  // Default error response
   const status = err.status || 500;
   const message = err.message || 'Internal server error';
 

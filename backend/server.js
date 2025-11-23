@@ -20,7 +20,6 @@ if (missingVars.length > 0) {
   process.exit(1);
 }
 
-// Start server
 app.listen(PORT, () => {
   console.log(`\nServer running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);

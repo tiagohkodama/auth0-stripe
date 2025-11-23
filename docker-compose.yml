@@ -1,5 +1,4 @@
 services:
-  # Backend API Service
   backend:
     build:
       context: ./backend
@@ -25,7 +24,6 @@ services:
       - stripe-auth0-network
     restart: unless-stopped
 
-  # Frontend React App Service
   frontend:
     build:
       context: ./frontend

@@ -9,10 +9,8 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
  */
 export async function callApi(endpoint, getAccessToken, options = {}) {
   try {
-    // Get access token from Auth0
     const token = await getAccessToken();
 
-    // Make the API call
     const response = await fetch(`${API_URL}${endpoint}`, {
       ...options,
       headers: {
@@ -22,7 +20,6 @@ export async function callApi(endpoint, getAccessToken, options = {}) {
       },
     });
 
-    // Parse response
     const data = await response.json();
 
     if (!response.ok) {

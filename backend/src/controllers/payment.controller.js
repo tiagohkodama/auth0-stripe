@@ -9,11 +9,9 @@ async function createPaymentIntent(req, res, next) {
   try {
     const { amount, currency = 'usd', description, metadata = {} } = req.body;
 
-    // Get user info from JWT (set by Auth0 middleware)
     const userId = req.auth.sub; // Auth0 user ID
     const email = req.auth.payload.email || req.body.email;
 
-    // Validate inputs
     if (!amount) {
       throw new AppError('Amount is required', 400);
     }
@@ -22,12 +20,10 @@ async function createPaymentIntent(req, res, next) {
       throw new AppError('Email is required', 400);
     }
 
-    // Add description to metadata if provided
     if (description) {
       metadata.description = description;
     }
 
-    // Create payment intent
     const paymentIntent = await stripeService.createPaymentIntent(
       userId,
       email,
@@ -36,7 +32,6 @@ async function createPaymentIntent(req, res, next) {
       metadata
     );
 
-    // Return client secret to frontend
     res.json({
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id

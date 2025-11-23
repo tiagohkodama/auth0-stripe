@@ -11,7 +11,6 @@ const userCustomerMap = new Map();
  * @returns {Promise<Object>} Stripe customer object
  */
 async function getOrCreateCustomer(auth0UserId, email) {
-  // Check if we already have a customer ID for this user
   if (userCustomerMap.has(auth0UserId)) {
     const customerId = userCustomerMap.get(auth0UserId);
     try {
@@ -23,7 +22,6 @@ async function getOrCreateCustomer(auth0UserId, email) {
     }
   }
 
-  // Create new Stripe customer
   const customer = await stripe.customers.create({
     email: email,
     metadata: {
@@ -31,7 +29,6 @@ async function getOrCreateCustomer(auth0UserId, email) {
     }
   });
 
-  // Store the mapping
   userCustomerMap.set(auth0UserId, customer.id);
 
   console.log(`Created new Stripe customer ${customer.id} for user ${auth0UserId}`);
@@ -49,15 +46,12 @@ async function getOrCreateCustomer(auth0UserId, email) {
  * @returns {Promise<Object>} Payment Intent object
  */
 async function createPaymentIntent(auth0UserId, email, amount, currency = 'usd', metadata = {}) {
-  // Validate amount
   if (!amount || amount < 50) {
     throw new Error('Amount must be at least 50 cents');
   }
 
-  // Get or create customer
   const customer = await getOrCreateCustomer(auth0UserId, email);
 
-  // Create payment intent
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amount,
     currency: currency,
@@ -67,7 +61,7 @@ async function createPaymentIntent(auth0UserId, email, amount, currency = 'usd',
       ...metadata
     },
     automatic_payment_methods: {
-      enabled: true, // Supports cards, wallets, etc.
+      enabled: true,
     },
   });
 

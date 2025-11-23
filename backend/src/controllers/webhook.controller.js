@@ -14,14 +14,12 @@ async function handleStripeWebhook(req, res) {
   let event;
 
   try {
-    // Verify webhook signature
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  // Handle the event
   try {
     switch (event.type) {
       case 'payment_intent.succeeded':
